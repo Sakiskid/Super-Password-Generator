@@ -30,6 +30,16 @@ header {
   color: hsl(206, 17%, 28%);
 }
 
+h1 {
+  font-size: larger;
+}
+
+/* ANCHOR Generator Preferences */
+.label, .input {
+  text-align: center;
+  justify-content: center;
+}
+
 .card {
   background-color: hsl(0, 0%, 100%);
   border-radius: 5px;
