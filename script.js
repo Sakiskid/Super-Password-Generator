@@ -177,6 +177,8 @@ function initializeGeneration() {
   else {
     console.log("Something went wrong, no gen style selected.");
   }
+
+  console.log("Generation Initialized!");
 }
 
 // ANCHOR Generate Password Characters
@@ -187,7 +189,21 @@ function generatePasswordCharacters() {
   // 3. Repeat for length
 
   let acceptedCharacters;
+  generatedPassword = null;
   
+  for (let i = 0; i < prefLength - 1; i++) {
+    // Declare the next character 
+    let nextChar;
+
+    nextChar = alphabet[Math.floor(Math.random())];
+
+    if(prefReqsCapitals) {
+      nextChar.toUpperCase();
+    }
+
+    generatedPassword += nextChar;
+  }
+
   if(prefReqsNumbers){
     // add numbers to accepted characters
   }
@@ -195,6 +211,8 @@ function generatePasswordCharacters() {
   if(prefReqsSpecials){
     // add specials to accepted characters
   }
+
+  writePassword();
 }
 
 function generatePasswordNouns(){
@@ -207,8 +225,9 @@ function generatePasswordPhrase(){
 
 // Write password to the #password input
 function writePassword() {
-  let password = generatePassword();
-  passwordText.value = password;
+  passwordText.value = generatedPassword;
+  // let password = generatePassword();
+  // passwordText.value = password;
 }
 
 
