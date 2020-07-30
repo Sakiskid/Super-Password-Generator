@@ -34,6 +34,10 @@ h1 {
   font-size: larger;
 }
 
+h3 {
+  text-align: center;
+}
+
 /* ANCHOR Generator Preferences */
 .label, .input {
   text-align: center;
