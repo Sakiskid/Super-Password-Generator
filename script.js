@@ -13,7 +13,7 @@ const prefReqsCapitals = document.getElementById("pref-reqs-capitals").checked;
 const prefReqsNumbers = document.getElementById("pref-reqs-numbers").checked;
 const prefReqsSpecials = document.getElementById("pref-reqs-specials").checked;
 
-const prefLength = document.getElementById("pref-length").value;
+const prefLength = document.getElementById("pref-length");
 
 // Fold These Region When not in use
 const nouns = [
@@ -183,25 +183,27 @@ function initializeGeneration() {
 
 // ANCHOR Generate Password Characters
 function generatePasswordCharacters() {
+  console.log("Generating Password Type: Characters!");
   // 1. Take input of requirements (reqs)
   // 2. Generate random character based on reqs
   // 2.5 randomly choose between alphabet or using a prefReq (capitalizing a letter, or adding a special character/number)
   // 3. Repeat for length
 
   let acceptedCharacters;
-  generatedPassword = null;
+  generatedPassword = "";
   
-  for (let i = 0; i < prefLength - 1; i++) {
+  for (let i = 0; i < prefLength.value; i++) {
     // Declare the next character 
     let nextChar;
 
-    nextChar = alphabet[Math.floor(Math.random())];
+    nextChar = alphabet[Math.floor(Math.random() * alphabet.length - 1)];
 
     if(prefReqsCapitals) {
-      nextChar.toUpperCase();
+      // TODO make this capitalize randomly: nextChar.toUpperCase();
     }
 
     generatedPassword += nextChar;
+    console.log("Generated Password: " + generatedPassword + " || nextChar: " + nextChar);
   }
 
   if(prefReqsNumbers){
@@ -225,6 +227,7 @@ function generatePasswordPhrase(){
 
 // Write password to the #password input
 function writePassword() {
+  console.log("Writing Password: " + generatedPassword);
   passwordText.value = generatedPassword;
   // let password = generatePassword();
   // passwordText.value = password;
@@ -232,4 +235,10 @@ function writePassword() {
 
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", initializeGeneration());
+
+// generateBtn.addEventListener("click", initializeGeneration());
+
+generateBtn.addEventListener("click", function () {
+  initializeGeneration();
+});
+
