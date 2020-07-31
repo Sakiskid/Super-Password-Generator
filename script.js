@@ -13,6 +13,8 @@ const prefReqsCapitals = document.getElementById("pref-reqs-capitals").checked;
 const prefReqsNumbers = document.getElementById("pref-reqs-numbers").checked;
 const prefReqsSpecials = document.getElementById("pref-reqs-specials").checked;
 
+const capitalizeChance = 0.25;
+
 const prefLength = document.getElementById("pref-length");
 
 // Fold These Region When not in use
@@ -196,13 +198,17 @@ function generatePasswordCharacters() {
     // Declare the next character 
     let nextChar;
 
-    nextChar = alphabet[Math.floor(Math.random() * alphabet.length)];
-    console.log("Generated Password: " + generatedPassword + " || nextChar: " + nextChar);
-
+    nextChar = alphabet[random(alphabet.length)];
+    
     if(prefReqsCapitals) {
-      // TODO make this capitalize randomly: nextChar.toUpperCase();
+      if(Math.random() < capitalizeChance) {
+        nextChar = nextChar.toUpperCase();
+      }
     }
 
+    
+    
+    // console.log("Generated Password: " + generatedPassword + " || nextChar: " + nextChar);
     generatedPassword += nextChar;
   }
 
@@ -241,4 +247,8 @@ function writePassword() {
 generateBtn.addEventListener("click", function () {
   initializeGeneration();
 });
+
+function random (length) {
+  return Math.floor(Math.random() * length);
+}
 
