@@ -196,14 +196,14 @@ function generatePasswordCharacters() {
     // Declare the next character 
     let nextChar;
 
-    nextChar = alphabet[Math.floor(Math.random() * alphabet.length - 1)];
+    nextChar = alphabet[Math.floor(Math.random() * alphabet.length)];
+    console.log("Generated Password: " + generatedPassword + " || nextChar: " + nextChar);
 
     if(prefReqsCapitals) {
       // TODO make this capitalize randomly: nextChar.toUpperCase();
     }
 
     generatedPassword += nextChar;
-    console.log("Generated Password: " + generatedPassword + " || nextChar: " + nextChar);
   }
 
   if(prefReqsNumbers){

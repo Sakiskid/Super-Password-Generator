@@ -33,3 +33,5 @@ generateBtn.addEventListener("click", function () {
   initializeGeneration();
 });
 ```
+
+- I had a problem with an undefined error when choosing a new letter for my character style generator. It was hard to debug! I realized that just running it step by step into a calculator was the best way to figure out the issue, and I soon realized that I was counting up to 27 letters instead of 26.
