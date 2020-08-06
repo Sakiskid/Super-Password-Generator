@@ -181,8 +181,6 @@ function initializeGeneration() {
   else {
     console.log("Something went wrong, no gen style selected.");
   }
-
-  // console.log("Generation Initialized!");
 }
 
 // SECTION Generate Password Characters
@@ -207,16 +205,6 @@ function generatePasswordCharacters() {
 }
 
 function ensurePasswordContainsRequirements() {
-  // to make sure there are the reqs generated: 
-  // 1. iterate through and use IndexOf to find out if the string contains the req
-  // 2. replace characters with req'd characters
-
-  // maybe it would be easier if i log the index that the req is in
-  // what would I need?
-  // - indexOfNumber
-  // - indexOfSpecial
-  // - indexOfCapital
-
   // populate array of available 'empty' indexes
   emptyIndexes = [];
   for (let i = 0; i < generatedPassword.length; i++) {
@@ -228,8 +216,6 @@ function ensurePasswordContainsRequirements() {
   let numberOfReqsLeft = timesToLoop; // this var is so there aren't TOO many reqs, the loop breaks once it hits the maximum
   let loopedAtLeastOnce = false; // this is a safety measure so all the requirements go through at least once
   for (let i = 0; i <= timesToLoop - 1; i++) {
-
-    console.log(numberOfReqsLeft, emptyIndexes.length, i);
 
     if ((emptyIndexes.length === 0 || numberOfReqsLeft <= 0) && loopedAtLeastOnce) { break; }
 
@@ -249,10 +235,8 @@ function ensurePasswordContainsRequirements() {
 
     if (includeSpecials.checked) {
       let i = GetIndexNotTaken();
-      console.log("replacing with special: ", replaceCharInPassword(i, specialCharacters[random(specialCharacters.length)]))
       generatedPassword = replaceCharInPassword(i, specialCharacters[random(specialCharacters.length)]);
       numberOfReqsLeft--;
-
     }
     loopedAtLeastOnce = true;
   }
@@ -305,21 +289,18 @@ function generatePasswordPhrase() {
 
 //SECTION GENERAL FUNCTIONS
 function addToGeneratedPassword(string) {
-  // console.log("Generated Password: " + generatedPassword + " || nextString: " + string);
   generatedPassword += string;
 }
 
 
 function writePassword() {
-  // Write password to the #password input
   console.log("Writing Password: " + generatedPassword);
   passwordText.value = generatedPassword;
 }
 
 function random(length) {
   return Math.floor(Math.random() * length);
-}
-//!SECTION 
+} 
 
 function calculatePasswordStrength() {
   // 10 is the strongest password, 0 is weakest
