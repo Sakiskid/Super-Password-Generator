@@ -2,7 +2,7 @@
 const generateBtn = document.querySelector("#generate");
 const passwordText = document.querySelector("#password");
 
-var generatedPassword;
+var generatedPassword = "";
 
 let style;
 const prefStyleCharacters = document.getElementById("pref-style-characters");
@@ -13,10 +13,12 @@ const includeCapitals = document.getElementById("pref-reqs-capitals");
 const includeNumbers = document.getElementById("pref-reqs-numbers");
 const includeSpecials = document.getElementById("pref-reqs-specials");
 
-
+// CharacterStyle Generation
 const capitalizeChance = 0.25;
-
 const prefLength = document.getElementById("pref-length");
+let indexOfCapital;
+let indexOfNumber;
+let indexOfSpecial;
 
 // Fold These Region When not in use
 const nouns = [
@@ -181,21 +183,16 @@ function initializeGeneration() {
     console.log("Something went wrong, no gen style selected.");
   }
 
-  console.log("Generation Initialized!");
+  // console.log("Generation Initialized!");
 }
 
-// ANCHOR Generate Password Characters
+// SECTION Generate Password Characters
 function generatePasswordCharacters() {
-  console.log("Generating Password Type: Characters!");
   // 1. Take input of requirements (reqs)
   // 2. Generate random character based on reqs
   // 2.5 randomly choose between alphabet or using a prefReq (capitalizing a letter, or adding a special character/number)
   // 3. Repeat for length
-
-  // to make sure there are the reqs generated: 
-  // 1. iterate through and use IndexOf to find out if the string contains the req
-  // 2. replace characters with req'd characters
-
+  
   let acceptedCharacters;
   let hasNumber = false;
   let hasSpecial = false;
@@ -204,29 +201,62 @@ function generatePasswordCharacters() {
 
   // Iterate through and find nextChar
   for (let i = 0; i < prefLength.value; i++) {
-
     let nextChar;
     nextChar = alphabet[random(alphabet.length)];
-
-    if(includeNumbers.checked && !hasNumber) {
-      nextChar = numbers[random(numbers.length)];
-      hasNumber = true;
-    }
-    else if(includeSpecials.checked && !hasSpecial) {
-      nextChar = specialCharacters[random(specialCharacters.length)];
-      hasSpecial = true;
-    }
-    else if (includeCapitals.checked) {
-      if (Math.random() < capitalizeChance) {
-        nextChar = nextChar.toUpperCase();
-      }
-    }
-
     addToGeneratedPassword(nextChar);
   }
-
+  
+  // Make sure generator reqs are in place
+  ensurePasswordContainsRequirements();
   writePassword();
 }
+
+function ensurePasswordContainsRequirements() {
+  // to make sure there are the reqs generated: 
+  // 1. iterate through and use IndexOf to find out if the string contains the req
+  // 2. replace characters with req'd characters
+
+  // maybe it would be easier if i log the index that the req is in
+  // what would I need?
+  // - indexOfNumber
+  // - indexOfSpecial
+  // - indexOfCapital
+  // 
+
+  if(includeCapitals.checked) {
+    let i = GetIndexNotTaken();
+    indexOfCapital = i;
+    // generatedPassword[i].toUpperCase();
+    generatedPassword = replaceCharInPassword(i, generatedPassword[i].toUpperCase());
+    // console.log("Including Capital! index: ", indexOfCapital, "and char at index: ", generatedPassword[i]);
+  }
+
+  if(includeNumbers.checked) {
+    let i = GetIndexNotTaken();
+    indexOfNumber = i;
+    generatedPassword = replaceCharInPassword(i, numbers[random(numbers.length)]);
+  }
+
+  if(includeSpecials.checked) {
+    let i = GetIndexNotTaken();
+    indexOfSpecial = i;
+    generatedPassword = replaceCharInPassword(i, specialCharacters[random(specialCharacters.length)]);
+  }
+}
+
+function GetIndexNotTaken() {
+  let i = random(generatedPassword.length);
+  while (i === indexOfCapital || i === indexOfNumber || i === indexOfSpecial) {
+    i = random(generatedPassword.length);
+  }
+  return i;
+}
+
+function replaceCharInPassword(index, newChar) {
+  let newString = generatedPassword.substring(0, index) + newChar + generatedPassword.substring(index + 1);
+  return newString;
+}
+//!SECTION
 
 function generatePasswordPhrase() {
   // 0. show that password length doesn't work with this generation
@@ -235,10 +265,12 @@ function generatePasswordPhrase() {
   // 3. make sure there are the requirements in each generation
 }
 
+//SECTION GENERAL FUNCTIONS
 function addToGeneratedPassword(string) {
   // console.log("Generated Password: " + generatedPassword + " || nextString: " + string);
   generatedPassword += string;
 }
+
 
 function writePassword() {
   // Write password to the #password input
@@ -249,6 +281,7 @@ function writePassword() {
 function random(length) {
   return Math.floor(Math.random() * length);
 }
+//!SECTION 
 
 function validateRequirements() {
   if (includeNumbers) {

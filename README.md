@@ -12,7 +12,10 @@
 
 - Steps for figuring out the generator:
 
-1. 
+- I initially wanted to loop through the generated password to double check that all of the requirements (capitals, special characters, numbers) were there.
+I realized that logging the index of the requirement when they are added to the password and then making sure that they haven't been generated over would be a faster solution (albeit harder to program)
+- During this I found out that strings are immutable (very frustrating, there is no error log when trying to change an immutable string!) and had to create a workaround using substring. The generator now ALWAYS has 1 of the requirement you ask for; it never overwrites a req with another req.
+
 
 ### Features:
 
