@@ -1,6 +1,6 @@
 // Assignment Code
 const generateBtn = document.querySelector("#generate");
-const passwordText = document.querySelector("#password");
+const passwordText = document.getElementById("password");
 
 var generatedPassword = "";
 
@@ -15,13 +15,12 @@ const includeSpecials = document.getElementById("pref-reqs-specials");
 const bodyEl = document.body;
 const lengthColEl = document.getElementById("lengthCol");
 const passwordStrengthEl = document.getElementById("password-strength");
+const requirementPercentage = document.getElementById("pref-req-percentage");
 
 // CharacterStyle Generation
-const capitalizeChance = 0.25;
 const prefLength = document.getElementById("pref-length");
-let indexOfCapital;
-let indexOfNumber;
-let indexOfSpecial;
+var emptyIndexes = [];
+
 
 // Fold These Region When not in use
 const nouns = [
@@ -201,7 +200,7 @@ function generatePasswordCharacters() {
     nextChar = alphabet[random(alphabet.length)];
     addToGeneratedPassword(nextChar);
   }
-  
+
   // Make sure generator reqs are in place
   ensurePasswordContainsRequirements();
   writePassword();
@@ -217,35 +216,54 @@ function ensurePasswordContainsRequirements() {
   // - indexOfNumber
   // - indexOfSpecial
   // - indexOfCapital
-  // 
 
-  if(includeCapitals.checked) {
-    let i = GetIndexNotTaken();
-    indexOfCapital = i;
-    // generatedPassword[i].toUpperCase();
-    generatedPassword = replaceCharInPassword(i, generatedPassword[i].toUpperCase());
-    // console.log("Including Capital! index: ", indexOfCapital, "and char at index: ", generatedPassword[i]);
+  // populate array of available 'empty' indexes
+  emptyIndexes = [];
+  for (let i = 0; i < generatedPassword.length; i++) {
+    emptyIndexes.push(i);
   }
 
-  if(includeNumbers.checked) {
-    let i = GetIndexNotTaken();
-    indexOfNumber = i;
-    generatedPassword = replaceCharInPassword(i, numbers[random(numbers.length)]);
-  }
+  // This loop handles the percentage of characters being reqs
+  let timesToLoop = generatedPassword.length * (requirementPercentage.value / 100); // this var is for percentage
+  let numberOfReqsLeft = timesToLoop; // this var is so there aren't TOO many reqs, the loop breaks once it hits the maximum
+  let loopedAtLeastOnce = false; // this is a safety measure so all the requirements go through at least once
+  for (let i = 0; i <= timesToLoop - 1; i++) {
 
-  if(includeSpecials.checked) {
-    let i = GetIndexNotTaken();
-    indexOfSpecial = i;
-    generatedPassword = replaceCharInPassword(i, specialCharacters[random(specialCharacters.length)]);
+    console.log(numberOfReqsLeft, emptyIndexes.length, i);
+
+    if ((emptyIndexes.length === 0 || numberOfReqsLeft <= 0) && loopedAtLeastOnce) { break; }
+
+    if (includeCapitals.checked) {
+      let i = GetIndexNotTaken();
+      generatedPassword = replaceCharInPassword(i, generatedPassword[i].toUpperCase());
+      numberOfReqsLeft--;
+      if ((emptyIndexes.length === 0 || numberOfReqsLeft <= 0) && loopedAtLeastOnce) { break; }
+    }
+
+    if (includeNumbers.checked) {
+      let i = GetIndexNotTaken();
+      generatedPassword = replaceCharInPassword(i, numbers[random(numbers.length)]);     
+      numberOfReqsLeft--; 
+      if ((emptyIndexes.length === 0 || numberOfReqsLeft <= 0) && loopedAtLeastOnce) { break; }
+    }
+
+    if (includeSpecials.checked) {
+      let i = GetIndexNotTaken();
+      console.log("replacing with special: ", replaceCharInPassword(i, specialCharacters[random(specialCharacters.length)]))
+      generatedPassword = replaceCharInPassword(i, specialCharacters[random(specialCharacters.length)]);
+      numberOfReqsLeft--;
+
+    }
+    loopedAtLeastOnce = true;
   }
 }
 
 function GetIndexNotTaken() {
-  let i = random(generatedPassword.length);
-  while (i === indexOfCapital || i === indexOfNumber || i === indexOfSpecial) {
-    i = random(generatedPassword.length);
-  }
-  return i;
+  // I originally had a long loop here, but realized it was easier to have a list of available spots and to just update that list.
+  let emptyIndex = emptyIndexes[random(emptyIndexes.length)];
+  emptyIndexes.splice(emptyIndexes.indexOf(emptyIndex), 1);
+
+  return emptyIndex;
 }
 
 function replaceCharInPassword(index, newChar) {
@@ -267,17 +285,17 @@ function generatePasswordPhrase() {
 
   generatedPassword = firstAdjective + secondAdjective + noun;
 
-  if(!includeCapitals.checked) {
+  if (!includeCapitals.checked) {
     let string = generatedPassword.toLowerCase();
     generatedPassword = string;
   }
 
-  if(includeNumbers.checked) {
+  if (includeNumbers.checked) {
     let string = numbers[random(numbers.length)] + generatedPassword;
     generatedPassword = string;
   }
 
-  if(includeSpecials.checked) {
+  if (includeSpecials.checked) {
     let string = generatedPassword + specialCharacters[random(specialCharacters.length)];
     generatedPassword = string;
   }
@@ -303,8 +321,33 @@ function random(length) {
 }
 //!SECTION 
 
+function calculatePasswordStrength() {
+  // 10 is the strongest password, 0 is weakest
+  let strength = 0;
+
+  if (includeSpecials.checked) {
+    strength += 2;
+  }
+  if (includeCapitals.checked) {
+    strength += 2;
+  }
+  if (includeNumbers.checked) {
+    strength += 2;
+  }
+
+  if (prefStylePhrase.checked) { strength += 4; }
+
+  if (prefLength.value > 0) { strength += 0; }
+  if (prefLength.value > 8) { strength += 1; }
+  if (prefLength.value > 10) { strength += 2; }
+  if (prefLength.value > 12) { strength += 3; }
+  if (prefLength.value > 14) { strength += 4; }
+
+  passwordStrengthEl.style.width = strength * 10 + "%";
+}
+
 bodyEl.addEventListener("change", function () {
-  
+  calculatePasswordStrength();
 });
 
 generateBtn.addEventListener("click", function () {
@@ -313,13 +356,36 @@ generateBtn.addEventListener("click", function () {
 });
 
 prefStylePhrase.addEventListener("change", function () {
-  if(prefStylePhrase.checked){
+  if (prefStylePhrase.checked) {
+    prefLength.value = 0;
     lengthColEl.hidden = true;
   }
 });
 
-prefStyleCharacters.addEventListener("change", function() {
-  if(prefStyleCharacters.checked){
+prefStyleCharacters.addEventListener("change", function () {
+  if (prefStyleCharacters.checked) {
+    prefLength.value = 8;
     lengthColEl.hidden = false;
   }
 })
+
+const prefLengthMin = prefLength.getAttribute("min");
+const prefLengthMax = prefLength.getAttribute("max");
+prefLength.addEventListener("change", function (event) {
+  event.preventDefault();
+  if(prefLength.value < parseInt(prefLengthMin)){
+    prefLength.value = parseInt(prefLengthMin);
+  } 
+  else if (prefLength.value > parseInt(prefLengthMax)){
+    prefLength.value = parseInt(prefLengthMax);
+  }
+
+  // change font size
+  if(prefLength.value > 100) { passwordText.style.fontSize = "1rem"; }
+  else if(prefLength.value > 60) { passwordText.style.fontSize = "2rem"; }
+  else if(prefLength.value > 40) { passwordText.style.fontSize = "2.2rem"; }
+  else if(prefLength.value > 20) { passwordText.style.fontSize = "3rem"; }
+  else if(prefLength.value > 100) { passwordText.style.fontSize = "4rem"; }
+});
+
+calculatePasswordStrength();

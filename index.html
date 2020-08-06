@@ -60,23 +60,29 @@
                 </div>
                 <div class="col" id="lengthCol">
                   <h3>Length</h3>
-                  <input type="number" id="pref-length" name="pref-length" min="8" max="128" value="10">
+                  <div class="col">
+                    <input type="number" id="pref-length" name="pref-length" min="8" max="128" value="10">
+                  </div>
+                  <div class="col">
+                    <input type="range" id="pref-req-percentage" name="pref-req-percentage" min="10" max="100" value="10">
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- TODO limit length to instruction requirements -->
-          <!-- TODO add password strength -->
-          <!-- TODO add description to top of page with instructions -->
+          <!-- DONE limit length to instruction requirements -->
+          <!-- DONE add password strength -->
+          <!-- DONE add description to top of page with instructions -->
           <!-- TODO improve styling on page -->
           <!-- TODO percentage of password as reqs prompt -->
           <!-- TODO clean up code -->
           <!-- any inappropriate phrases are not intentional. The more outlandish the phrase the better chance you remember -->
 
           <!-- PASSWORD STRENGTH -->
+          <h2>Password Strength</h2>
           <div class="progress">
-            <div class="progress-bar" id="password-strength" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated" id="password-strength" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
 
           <div class="card-body text-center">
@@ -85,7 +91,7 @@
           <!-- Generated Password Area -->
           <div class="card-footer">
             <textarea readonly id="password" placeholder="Your Secure Password"
-              aria-label="Generated Password"></textarea>
+              aria-label="Generated Password" rows="1"></textarea>
           </div>
 
         </div>

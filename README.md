@@ -18,6 +18,9 @@ I realized that logging the index of the requirement when they are added to the 
 
 
 ### Features:
+- Two Styles of Password Generation!
+- Support for Capital, Number, and Special Character requirements!
+- Percentage of special characters as well as password length.
 
 ### Noteworthy:
 
