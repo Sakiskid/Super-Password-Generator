@@ -173,9 +173,6 @@ function initializeGeneration() {
   if (prefStyleCharacters.checked === true) {
     generatePasswordCharacters();
   }
-  else if (prefStyleNouns.checked === true) {
-    generatePasswordNouns();
-  }
   else if (prefStylePhrase.checked === true) {
     generatePasswordPhrase();
   }
@@ -259,10 +256,17 @@ function replaceCharInPassword(index, newChar) {
 //!SECTION
 
 function generatePasswordPhrase() {
-  // 0. show that password length doesn't work with this generation
+  // 0. show that password length doesn't work with this generation, hide pw length
   // 1. generate 2 adjectives
   // 2. generate 1 noun
   // 3. make sure there are the requirements in each generation
+  generatedPassword = "";
+
+  let firstAdjective = adjectives[random(adjectives.length)];
+  let secondAdjective = adjectives[random(adjectives.length)];
+  let noun = nouns[random(nouns.length)];
+
+  generatedPassword = firstAdjective + secondAdjective + noun;
 }
 
 //SECTION GENERAL FUNCTIONS
