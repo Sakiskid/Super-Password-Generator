@@ -31,17 +31,34 @@ header {
 }
 
 h1 {
-  font-size: larger;
+  font-size: 300%;
+  font-family: 'Sniglet', cursive;
+}
+
+h2 {
+  font-size: 200%;
+  font-weight: bolder;
 }
 
 h3 {
+  font-family: 'Antic Slab', serif;
+  font-size: 150%;
+  font-weight: bold;
   text-align: center;
+}
+
+textarea {
+  font-size: auto;
 }
 
 /* ANCHOR Generator Preferences */
 .label, .input {
   text-align: center;
   justify-content: center;
+}
+
+.label {
+  margin: 5px 0;
 }
 
 .card {
@@ -52,7 +69,7 @@ h3 {
   color: hsl(206, 17%, 28%);
   font-size: 18px;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 1200px;
   padding: 30px 40px;
 }
 

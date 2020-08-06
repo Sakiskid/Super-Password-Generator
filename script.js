@@ -6,12 +6,15 @@ var generatedPassword = "";
 
 let style;
 const prefStyleCharacters = document.getElementById("pref-style-characters");
-const prefStyleNouns = document.getElementById("pref-style-nouns");
 const prefStylePhrase = document.getElementById("pref-style-phrase");
 
 const includeCapitals = document.getElementById("pref-reqs-capitals");
 const includeNumbers = document.getElementById("pref-reqs-numbers");
 const includeSpecials = document.getElementById("pref-reqs-specials");
+
+const bodyEl = document.body;
+const lengthColEl = document.getElementById("lengthCol");
+const passwordStrengthEl = document.getElementById("password-strength");
 
 // CharacterStyle Generation
 const capitalizeChance = 0.25;
@@ -189,11 +192,7 @@ function generatePasswordCharacters() {
   // 2. Generate random character based on reqs
   // 2.5 randomly choose between alphabet or using a prefReq (capitalizing a letter, or adding a special character/number)
   // 3. Repeat for length
-  
-  let acceptedCharacters;
-  let hasNumber = false;
-  let hasSpecial = false;
-  let hasCapital = false;
+
   generatedPassword = "";
 
   // Iterate through and find nextChar
@@ -267,6 +266,23 @@ function generatePasswordPhrase() {
   let noun = nouns[random(nouns.length)];
 
   generatedPassword = firstAdjective + secondAdjective + noun;
+
+  if(!includeCapitals.checked) {
+    let string = generatedPassword.toLowerCase();
+    generatedPassword = string;
+  }
+
+  if(includeNumbers.checked) {
+    let string = numbers[random(numbers.length)] + generatedPassword;
+    generatedPassword = string;
+  }
+
+  if(includeSpecials.checked) {
+    let string = generatedPassword + specialCharacters[random(specialCharacters.length)];
+    generatedPassword = string;
+  }
+
+  writePassword();
 }
 
 //SECTION GENERAL FUNCTIONS
@@ -287,16 +303,23 @@ function random(length) {
 }
 //!SECTION 
 
-function validateRequirements() {
-  if (includeNumbers) {
-    addToGeneratedPassword(numbers[random(numbers.length)]);
-  }
-  if (includeSpecials) {
-    addToGeneratedPassword(numbers[random(numbers.length)]);
-  }
-}
+bodyEl.addEventListener("change", function () {
+  
+});
 
 generateBtn.addEventListener("click", function () {
   // Add event listener to generate button
   initializeGeneration();
 });
+
+prefStylePhrase.addEventListener("change", function () {
+  if(prefStylePhrase.checked){
+    lengthColEl.hidden = true;
+  }
+});
+
+prefStyleCharacters.addEventListener("change", function() {
+  if(prefStyleCharacters.checked){
+    lengthColEl.hidden = false;
+  }
+})
