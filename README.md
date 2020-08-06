@@ -1,6 +1,12 @@
+![Super Password Generator](assets/preview.png)
+
+---
+
 # Super-Password-Generator
 
-#### **8/6/2020**
+### [Click Here To use ](https://sakiskid.github.io/Super-Password-Generator/)
+
+#### **8/6/2020** 
 
 ## Features
 
@@ -24,7 +30,7 @@ I initially wanted to loop through the generated password to double check that a
 
 I realized that logging the index of the requirement when they are added to the password and then making sure that they haven't been generated over would be a faster solution (albeit harder to program).
 
-However, I ended up going with a MUCH simpler solution. I had an *aha!* moment, and realized that **if I just had a array of empty indexes**, I could remove the index each time a special character was placed.
+However, I ended up going with a MUCH simpler solution. I had an *aha!* moment, and realized that **if I just had a array of empty indexes**, I could remove the index each time a special character was placed.  
 
 *I am very proud of the way I handled making sure the requirements were in the password! This method was the 3rd iteration of me creating the 'ensurePasswordContainsRequirements' function. This was the computationally fastest method I could think of!*
 
