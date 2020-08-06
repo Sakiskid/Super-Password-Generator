@@ -1,15 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Password Generator</title>
-    <link rel="stylesheet" href="reset.css" />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="wrapper">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Super Password Generator</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <header>
+          <h1>Super Password Generator!</h1>
+        </header>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <!-- Everything needs to be in the card for the pretty border -->
+          <div class="card-header">
+            <h2>Generate A Passowrd</h2>
+          </div>
+
+          <!-- User Preferences -->
+          <div class="card-body">
+            <div class="col">
+              <h2 class="text-center mb-3">Generator Preferences</h2>
+              <div class="row text-left no-gutters">
+                <div class="col">
+                  <h3>Style</h3>
+                  <input type="radio" id="pref-style-characters" name="pref-style" checked>
+                  <label for="pref-style-characters">Random Characters</label>
+                  <br>
+                  <input type="radio" id="pref-style-phrase" name="pref-style">
+                  <label for="pref-style-phrase">Phrase (Easy To Remember)</label>
+                </div>
+                <div class="col">
+                  <h3>Requirements</h3>
+                  <input type="checkbox" id="pref-reqs-capitals" name="pref-reqs-capitals" checked>
+                  <label for="">Capitals?</label>
+                  <br>
+                  <input type="checkbox" id="pref-reqs-numbers" name="pref-reqs-numbers">
+                  <label for="">Numbers?</label>
+                  <br>
+                  <input type="checkbox" id="pref-reqs-specials" name="pref-reqs-specials">
+                  <label for="">Special Characters (!,$%^)?</label>
+                </div>
+                <div class="col">
+                  <h3>Length</h3>
+                  <input type="number" id="pref-length" name="pref-length" min="8" max="128" value="10">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODO limit length to instruction requirements -->
+          <!-- TODO add password strength -->
+          <!-- TODO add description to top of page with instructions -->
+          <!-- any inappropriate phrases are not intentional. The more outlandish the phrase the better chance you remember -->
+
+          <div class="card-body text-center">
+            <button id="generate" class="btn">Generate Password</button>
+          </div>
+          <!-- Generated Password Area -->
+          <div class="card-footer">
+            <textarea readonly id="password" placeholder="Your Secure Password"
+              aria-label="Generated Password"></textarea>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="wrapper">
       <header>
         <h1>Password Generator</h1>
       </header>
@@ -25,10 +98,10 @@
             aria-label="Generated Password"
           ></textarea>
         </div>
-        <!-- Generator Preferences Checkboxes -->
+        Generator Preferences Checkboxes
         <section>
           <h1>Generator Preferences</h1>
-          <label for="">Length of</label>
+          <label for="">Length of Password?</label>
           <input type="number" id="pref-length">
           <label for="">Include Capitals?</label>
           <input type="checkbox" id="pref-capitals" name="pref-capitals">
@@ -37,8 +110,10 @@
           <button id="generate" class="btn">Generate Password</button>
         </div>
       </div>
-    </div>
-    <script src="script.js"></script>
-    
-  </body>
+    </div> -->
+
+  <script src="script.js"></script>
+
+</body>
+
 </html>

@@ -9,9 +9,10 @@ const prefStyleCharacters = document.getElementById("pref-style-characters");
 const prefStyleNouns = document.getElementById("pref-style-nouns");
 const prefStylePhrase = document.getElementById("pref-style-phrase");
 
-const prefReqsCapitals = document.getElementById("pref-reqs-capitals").checked;
-const prefReqsNumbers = document.getElementById("pref-reqs-numbers").checked;
-const prefReqsSpecials = document.getElementById("pref-reqs-specials").checked;
+const includeCapitals = document.getElementById("pref-reqs-capitals");
+const includeNumbers = document.getElementById("pref-reqs-numbers");
+const includeSpecials = document.getElementById("pref-reqs-specials");
+
 
 const capitalizeChance = 0.25;
 
@@ -167,13 +168,13 @@ const specialCharacters = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-"
 
 function initializeGeneration() {
   // See What Preferences Are Selected
-  if(prefStyleCharacters.checked === true){
+  if (prefStyleCharacters.checked === true) {
     generatePasswordCharacters();
   }
-  else if(prefStyleNouns.checked === true){
+  else if (prefStyleNouns.checked === true) {
     generatePasswordNouns();
   }
-  else if(prefStylePhrase.checked === true){
+  else if (prefStylePhrase.checked === true) {
     generatePasswordPhrase();
   }
   else {
@@ -191,64 +192,74 @@ function generatePasswordCharacters() {
   // 2.5 randomly choose between alphabet or using a prefReq (capitalizing a letter, or adding a special character/number)
   // 3. Repeat for length
 
-  let acceptedCharacters;
-  generatedPassword = "";
-  
-  for (let i = 0; i < prefLength.value; i++) {
-    // Declare the next character 
-    let nextChar;
+  // to make sure there are the reqs generated: 
+  // 1. iterate through and use IndexOf to find out if the string contains the req
+  // 2. replace characters with req'd characters
 
+  let acceptedCharacters;
+  let hasNumber = false;
+  let hasSpecial = false;
+  let hasCapital = false;
+  generatedPassword = "";
+
+  // Iterate through and find nextChar
+  for (let i = 0; i < prefLength.value; i++) {
+
+    let nextChar;
     nextChar = alphabet[random(alphabet.length)];
-    
-    if(prefReqsCapitals) {
-      if(Math.random() < capitalizeChance) {
+
+    if(includeNumbers.checked && !hasNumber) {
+      nextChar = numbers[random(numbers.length)];
+      hasNumber = true;
+    }
+    else if(includeSpecials.checked && !hasSpecial) {
+      nextChar = specialCharacters[random(specialCharacters.length)];
+      hasSpecial = true;
+    }
+    else if (includeCapitals.checked) {
+      if (Math.random() < capitalizeChance) {
         nextChar = nextChar.toUpperCase();
       }
     }
 
-    
-    
-    // console.log("Generated Password: " + generatedPassword + " || nextChar: " + nextChar);
-    generatedPassword += nextChar;
-  }
-
-  if(prefReqsNumbers){
-    // add numbers to accepted characters
-  }
-  
-  if(prefReqsSpecials){
-    // add specials to accepted characters
+    addToGeneratedPassword(nextChar);
   }
 
   writePassword();
 }
 
-function generatePasswordNouns(){
-
+function generatePasswordPhrase() {
+  // 0. show that password length doesn't work with this generation
+  // 1. generate 2 adjectives
+  // 2. generate 1 noun
+  // 3. make sure there are the requirements in each generation
 }
 
-function generatePasswordPhrase(){
-
+function addToGeneratedPassword(string) {
+  // console.log("Generated Password: " + generatedPassword + " || nextString: " + string);
+  generatedPassword += string;
 }
 
-// Write password to the #password input
 function writePassword() {
+  // Write password to the #password input
   console.log("Writing Password: " + generatedPassword);
   passwordText.value = generatedPassword;
-  // let password = generatePassword();
-  // passwordText.value = password;
 }
 
-
-// Add event listener to generate button
-
-// generateBtn.addEventListener("click", initializeGeneration());
-
-generateBtn.addEventListener("click", function () {
-  initializeGeneration();
-});
-
-function random (length) {
+function random(length) {
   return Math.floor(Math.random() * length);
 }
 
+function validateRequirements() {
+  if (includeNumbers) {
+    addToGeneratedPassword(numbers[random(numbers.length)]);
+  }
+  if (includeSpecials) {
+    addToGeneratedPassword(numbers[random(numbers.length)]);
+  }
+}
+
+generateBtn.addEventListener("click", function () {
+  // Add event listener to generate button
+  initializeGeneration();
+});
