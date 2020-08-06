@@ -1,4 +1,4 @@
-![Super Password Generator](./assets/preview.png)
+![Super Password Generator](preview.png)
 
 ---
 
